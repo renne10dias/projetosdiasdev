@@ -1,0 +1,27 @@
+{
+    "name": "projetosdiasdev/projetosdiasdev",
+    "powered by": "projetosdiasdev.com",
+    "email": "projetosdiasdev@gmail.com",
+    "description": "Multiplatform system that will contain several functionalities.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "app\\": "app\\",
+            "public\\": "public\\"
+        }
+    },
+    "authors": [
+        {
+            "name": " DEV Renne Dias",
+            "email": "rennedias2003@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "firebase/php-jwt": "^6.10",
+        "ramsey/uuid": "^4.7",
+        "cboden/ratchet": "^0.4.4"
+    }
+}
