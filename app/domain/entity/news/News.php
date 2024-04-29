@@ -2,7 +2,9 @@
 
 namespace app\domain\entity\news;
 
+use app\domain\lib\FunctionServiceNews;
 use app\settings\libraries\uuid\UUIDGenerator;
+date_default_timezone_set('America/Sao_Paulo');
 
 class News{
     private string $uuid;
@@ -11,20 +13,22 @@ class News{
     private string $text;
     private string $slug;
     private string $link_share_news;
+    private string $type;
     private string $created_at;
     private string $tb_category_uuid;
     private string $tb_user_uuid;
 
 
-    public function __construct(string $title, string $description, string $text, string $tb_category_uuid, string $tb_user_uuid){
+    public function __construct(string $title, string $description, string $text, string $type, string $tb_category_uuid, string $tb_user_uuid){
         $uuidGenerator = new UUIDGenerator();
         $uuid = $uuidGenerator->getUUID();
         $this->uuid = $uuid;
         $this->title = $title;
         $this->description = $description;
         $this->text = $text;
-        $this->slug = 'teste-slug';
+        $this->slug = FunctionServiceNews::slugify($title);
         $this->link_share_news = 'link-share-news';
+        $this->type = $type;
         $this->created_at = date('Y-m-d H:i:s');
         $this->tb_category_uuid = $tb_category_uuid;
         $this->tb_user_uuid = $tb_user_uuid;
@@ -60,6 +64,11 @@ class News{
         return $this->link_share_news;
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
     public function getCreatedAt(): string
     {
         return $this->created_at;
@@ -74,6 +83,8 @@ class News{
     {
         return $this->tb_user_uuid;
     }
+
+
 
 
 

@@ -5,7 +5,6 @@ namespace app\controller\api\panel\news;
 use app\domain\entity\news\News;
 use app\domain\service\panel\news\NewsService;
 use app\settings\project\http\HttpStatus;
-use app\settings\project\message\BusinessMessage;
 header('Content-Type: application/json');
 
 class NewsController{
@@ -31,19 +30,16 @@ class NewsController{
             $title = $data['title'];
             $description = $data['description'];
             $text = $data['text'];
+            $type = $data['type'];
             // CATEGORY
             $tb_category_uuid = $data['tb_category_uuid'];
             // USER
             $tb_user_uuid = $data['tb_user_uuid'];
 
-            $news = new News($title, $description, $text, $tb_category_uuid, $tb_user_uuid);
+            $news = new News($title, $description, $text, $type, $tb_category_uuid, $tb_user_uuid);
             $postNews = new NewsService();
             // Registrar o cliente usando o serviço de registro
             $postNews->postNews($news);
-
-
-
-            new BusinessMessage('Mensagem da classe ApiController login', 200);
 
         } catch (\RuntimeException $e) {
             // Tratamento de erro específico para falha na busca de clientes

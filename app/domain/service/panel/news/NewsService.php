@@ -25,19 +25,21 @@ class NewsService{
             $text = $news->getText();
             $slug = $news->getSlug();
             $link_share_news = $news->getLinkShareNews();
+            $type = $news->getType();
             $created_at = $news->getCreatedAt();
             $tb_category_uuid = $news->getTbCategoryUuid();
             $tb_user_uuid = $news->getTbUserUuid();
 
 
             // Etapa 2: Inserir detalhes do cliente na tabela tb_client_details
-            $stmt_details = $connection->prepare("INSERT INTO tb_news (uuid, title, description, text, slug, link_share_news, created_at, tb_category_uuid, tb_user_uuid) VALUES (:uuid, :title, :description, :text, :slug, :link_share_news, :created_at, :tb_category_uuid, :tb_user_uuid)");
+            $stmt_details = $connection->prepare("INSERT INTO tb_news (uuid, title, description, text, slug, link_share_news, type, created_at, tb_category_uuid, tb_user_uuid) VALUES (:uuid, :title, :description, :text, :slug, :link_share_news, :type, :created_at, :tb_category_uuid, :tb_user_uuid)");
             $stmt_details->bindParam(':uuid', $uuid, \PDO::PARAM_STR);
             $stmt_details->bindParam(':title', $title, \PDO::PARAM_STR);
             $stmt_details->bindParam(':description', $description, \PDO::PARAM_STR);
             $stmt_details->bindParam(':text', $text, \PDO::PARAM_STR);
             $stmt_details->bindParam(':slug', $slug, \PDO::PARAM_STR);
             $stmt_details->bindParam(':link_share_news', $link_share_news, \PDO::PARAM_STR);
+            $stmt_details->bindParam(':type', $type, \PDO::PARAM_STR);
             $stmt_details->bindParam(':created_at', $created_at, \PDO::PARAM_STR);
             $stmt_details->bindParam(':tb_category_uuid', $tb_category_uuid, \PDO::PARAM_STR);
             $stmt_details->bindParam(':tb_user_uuid', $tb_user_uuid, \PDO::PARAM_STR);
