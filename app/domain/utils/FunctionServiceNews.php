@@ -1,6 +1,6 @@
 <?php
 
-namespace app\domain\lib;
+namespace app\domain\utils;
 
 class FunctionServiceNews{
 

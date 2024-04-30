@@ -18,10 +18,12 @@ class RouteManagement{
         $routes->addRoute($baseUrl . '/panel', 'app\controller\page\panel_admin\HomeController', 'home', 'GET');
         $routes->addRoute($baseUrl . '/panel/dashboard', 'app\controller\page\panel_admin\DashboardController', 'dashboard', 'GET');
         $routes->addRoute($baseUrl . '/panel/profile', 'app\controller\page\panel_admin\ProfileController', 'profile', 'GET');
+        $routes->addRoute($baseUrl . '/panel/news', 'app\controller\page\panel_admin\PostNewsController', 'postNews', 'GET');
+
 
         // API WEB
         // PANEL
-        $routes->addRoute($baseUrl . '/api/post/news', 'app\controller\api\panel\news\NewsController', 'postNews', 'POST');
+        $routes->addRoute($baseUrl . '/api/post/news', 'app\controller\api\panel\news\NewsControllerTeste2', 'postNews', 'POST');
 
         $routes->addRoute($baseUrl . '/api/home', 'app\controller\api\ApiController', 'home', 'GET');
         $routes->addRoute($baseUrl . '/api/teste', 'app\controller\api\ApiController', 'login', 'GET');

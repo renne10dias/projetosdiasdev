@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Notícia</title>
+</head>
+<body>
+<h2>Enviar Notícia</h2>
+<form id="newsForm">
+    <label for="title">Título:</label><br>
+    <input type="text" id="title" name="title" required><br>
+
+    <label for="description">Descrição:</label><br>
+    <input type="text" id="description" name="description" required><br>
+
+    <label for="text">Texto:</label><br>
+    <textarea id="text" name="text" required></textarea><br>
+
+    <label for="type">Tipo:</label><br>
+    <input type="text" id="type" name="type" required><br>
+
+    <label for="tb_category_uuid">Categoria UUID:</label><br>
+    <input type="text" id="tb_category_uuid" name="tb_category_uuid" required><br>
+
+    <label for="tb_user_uuid">Usuário UUID:</label><br>
+    <input type="text" id="tb_user_uuid" name="tb_user_uuid" required><br>
+
+    <label for="image">Imagem:</label><br>
+    <input type="file" id="image" name="image" accept="image/*" required><br>
+
+    <input type="button" value="Enviar" onclick="submitForm()">
+</form>
+
+<script>
+    // Função para ler arquivo como base64
+    function fileToBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const base64 = reader.result.split(',')[1];
+            callback(base64);
+        };
+        reader.onerror = function (error) {
+            console.error('Erro ao ler arquivo:', error);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Função para obter os valores do formulário
+    function getFormData() {
+        return {
+            title: document.getElementById('title').value,
+            description: document.getElementById('description').value,
+            text: document.getElementById('text').value,
+            type: document.getElementById('type').value,
+            tb_category_uuid: document.getElementById('tb_category_uuid').value,
+            tb_user_uuid: document.getElementById('tb_user_uuid').value,
+            image: document.getElementById('image').files[0]
+        };
+    }
+
+    // Função para enviar os dados para o servidor
+    function sendDataToServer(data) {
+        fetch('/projetosdiasdev/api/post/news', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Sucesso
+                    alert('Notícia postada com sucesso!');
+                    // Limpar o formulário se necessário
+                    document.getElementById('newsForm').reset();
+                } else {
+                    // Erro
+                    throw new Error('Erro ao postar notícia.');
+                }
+            })
+            .catch(error => {
+                alert('Erro ao postar notícia: ' + error.message);
+            });
+    }
+
+    // Função para enviar o formulário
+    function submitForm() {
+        // Obtém os valores do formulário
+        const formData = getFormData();
+
+        // Verifica se todos os campos obrigatórios estão preenchidos
+        const requiredFields = ['title', 'description', 'text', 'type', 'tb_category_uuid', 'tb_user_uuid', 'image'];
+        const missingFields = requiredFields.filter(field => !formData[field]);
+        if (missingFields.length > 0) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        // Converte a imagem para base64 e envia os dados para o servidor
+        fileToBase64(formData.image, function(base64Image) {
+            const jsonData = {
+                title: formData.title,
+                description: formData.description,
+                text: formData.text,
+                type: formData.type,
+                tb_category_uuid: formData.tb_category_uuid,
+                tb_user_uuid: formData.tb_user_uuid,
+                image: {
+                    name: formData.image.name,
+                    base64: base64Image
+                }
+            };
+
+            sendDataToServer(jsonData);
+        });
+    }
+</script>
+</body>
+</html>
