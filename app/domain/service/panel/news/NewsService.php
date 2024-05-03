@@ -2,8 +2,8 @@
 
 namespace app\domain\service\panel\news;
 
-use app\domain\entity\news\Category;
 use app\domain\entity\news\News;
+use app\domain\utils\FileUploader;
 use app\settings\project\database\Database;
 use app\settings\project\message\BusinessMessage;
 
@@ -30,7 +30,6 @@ class NewsService{
             $tb_category_uuid = $news->getTbCategoryUuid();
             $tb_user_uuid = $news->getTbUserUuid();
 
-
             // Etapa 2: Inserir detalhes do cliente na tabela tb_client_details
             $stmt_details = $connection->prepare("INSERT INTO tb_news (uuid, title, description, text, slug, link_share_news, type, created_at, tb_category_uuid, tb_user_uuid) VALUES (:uuid, :title, :description, :text, :slug, :link_share_news, :type, :created_at, :tb_category_uuid, :tb_user_uuid)");
             $stmt_details->bindParam(':uuid', $uuid, \PDO::PARAM_STR);
@@ -45,14 +44,20 @@ class NewsService{
             $stmt_details->bindParam(':tb_user_uuid', $tb_user_uuid, \PDO::PARAM_STR);
             $stmt_details->execute();
 
+            // Salvar imagens
+            $images = $news->getImages();
+            FileUploader::severalBase64ImagesTest($images);
 
             // Confirmar a transação
             $connection->commit();
-            new BusinessMessage('Noticia postada com sucesso!', 201);
+            new BusinessMessage('Notícia postada com sucesso!', 201);
 
         } catch (\PDOException $e) {
-            echo "Erro no NewsService: " . $e->getMessage();
+            // Em caso de erro, desfazer a transação e exibir mensagem de erro
+            if ($connection !== null) {
+                $connection->rollback();
+            }
+            new BusinessMessage("Erro no NewsService: " . $e->getMessage(), 500);
         }
     }
-
 }

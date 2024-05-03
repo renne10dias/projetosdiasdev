@@ -12,7 +12,7 @@ class News{
     private string $title;
     private string $description;
     private string $text;
-    private string $image;
+    private array $images;
     private string $slug;
     private string $link_share_news;
     private string $type;
@@ -21,28 +21,20 @@ class News{
     private string $tb_user_uuid;
 
 
-    public function __construct(string $title, string $description, string $text, array $image, string $type, string $tb_category_uuid, string $tb_user_uuid) {
+    public function __construct(string $title, string $description, string $text, array $images, string $type, string $tb_category_uuid, string $tb_user_uuid) {
         $uuidGenerator = new UUIDGenerator();
         $uuid = $uuidGenerator->getUUID();
         $this->uuid = $uuid;
         $this->title = $title;
         $this->description = $description;
         $this->text = $text;
-        $this->image = $this->uploadImage($image);
+        $this->images = $images;
         $this->slug = FunctionServiceNews::slugify($title);
         $this->link_share_news = 'link-share-news';
         $this->type = $type;
         $this->created_at = date('Y-m-d H:i:s');
         $this->tb_category_uuid = $tb_category_uuid;
         $this->tb_user_uuid = $tb_user_uuid;
-    }
-
-    // Método para fazer o upload da imagem
-    private function uploadImage(array $image): string {
-        // Crie uma instância do FileUploader
-        $fileUploader = new FileUploader();
-        // Faça o upload da imagem e retorne o caminho
-        return $fileUploader->uploadImageBase64($image);
     }
 
     public function getUuid(): string
@@ -65,9 +57,9 @@ class News{
         return $this->text;
     }
 
-    public function getImage(): string
+    public function getImages(): array
     {
-        return $this->image;
+        return $this->images;
     }
 
     public function getSlug(): string
@@ -99,10 +91,6 @@ class News{
     {
         return $this->tb_user_uuid;
     }
-
-
-
-
 
 
 

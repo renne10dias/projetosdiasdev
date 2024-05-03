@@ -23,7 +23,7 @@ class RouteManagement{
 
         // API WEB
         // PANEL
-        $routes->addRoute($baseUrl . '/api/post/news', 'app\controller\api\panel\news\NewsControllerTeste2', 'postNews', 'POST');
+        $routes->addRoute($baseUrl . '/api/post/news', 'app\controller\api\panel\news\NewsControllerTeste3', 'postNews', 'POST');
 
         $routes->addRoute($baseUrl . '/api/home', 'app\controller\api\ApiController', 'home', 'GET');
         $routes->addRoute($baseUrl . '/api/teste', 'app\controller\api\ApiController', 'login', 'GET');

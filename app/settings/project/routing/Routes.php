@@ -33,6 +33,12 @@ class Routes{
         // Adicionar verificação de CORS
         $this->handleCors();
 
+        // Verificar se é uma solicitação OPTIONS
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            $this->handleOptionsRequest();
+            return;
+        }
+
         $requestData = $this->getRequestDataFormatted();
         $method = $requestData['method'];
         $uriParts = $requestData['params'];
@@ -59,6 +65,17 @@ class Routes{
         echo json_encode(array("message" => "Rota não encontrada"));
     }
 
+    private function handleOptionsRequest(): void {
+        // Configurar os cabeçalhos CORS necessários para uma solicitação OPTIONS
+        $this->handleCors();
+
+        // Responder com status HTTP 200 OK
+        http_response_code(200);
+
+        // Finalizar o script após responder à solicitação OPTIONS
+        exit();
+    }
+
     private function handleCors(): void {
         // Permitir solicitações de qualquer origem
         header("Access-Control-Allow-Origin: *");
@@ -67,7 +84,6 @@ class Routes{
         // Permitir cabeçalhos específicos
         header("Access-Control-Allow-Headers: Content-Type");
     }
-
 
     private function executeCallback($callback): void {
         $controllerName = $callback['controller'];
@@ -112,7 +128,4 @@ class Routes{
             'params' => $uriParts
         ];
     }
-
-
-
 }
