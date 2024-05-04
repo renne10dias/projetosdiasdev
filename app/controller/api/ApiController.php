@@ -3,6 +3,7 @@
 namespace app\controller\api;
 use app\settings\project\http\HttpStatus;
 use app\settings\project\message\BusinessMessage;
+header('Content-Type: application/json');
 
 class ApiController{
 
@@ -41,8 +42,9 @@ class ApiController{
         }
     }
 
-    public function teste2($userId){
+    public function teste2($vars){
         try {
+            $userId = $vars['id'];
             // Monta a mensagem JSON diretamente e retorna
             new BusinessMessage("Teste 2 com ApiController ID $userId", 200);
         } catch (\RuntimeException $e) {
