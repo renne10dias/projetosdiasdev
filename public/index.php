@@ -15,6 +15,7 @@ $config = new RoutesConfig();
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
 
+
 if ($httpMethod === 'OPTIONS') {
     // Responda com cabeçalhos CORS apropriados
     header("Access-Control-Allow-Origin: *");

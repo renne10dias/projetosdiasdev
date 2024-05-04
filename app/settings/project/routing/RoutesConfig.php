@@ -4,6 +4,7 @@ namespace app\settings\project\routing;
 
 
 use app\urls\Routes;
+use FastRoute\Dispatcher;
 
 class RoutesConfig{
     protected $dispatcher;
@@ -16,13 +17,13 @@ class RoutesConfig{
         $routeInfo = $this->dispatcher->dispatch($httpMethod, $uri);
 
         switch ($routeInfo[0]) {
-            case \FastRoute\Dispatcher::NOT_FOUND:
+            case Dispatcher::NOT_FOUND:
                 echo '404 - Página não encontrada';
                 break;
-            case \FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+            case Dispatcher::METHOD_NOT_ALLOWED:
                 echo '405 - Método não permitido';
                 break;
-            case \FastRoute\Dispatcher::FOUND:
+            case Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
 

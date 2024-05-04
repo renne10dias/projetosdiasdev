@@ -5,18 +5,18 @@ namespace app\urls;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
-class Routes
-{
+class Routes{
     public static function defineRoutes(){
         return simpleDispatcher(function (RouteCollector $r) {
+            $baseUrl = '/projetosdiasdev/';
 
             // SITE ROUTES
-            $r->addGroup('/projetosdiasdev/', function (RouteCollector $r) {
+            $r->addGroup($baseUrl, function (RouteCollector $r) { // projetosdiasdev/
                 $r->addRoute('GET', '', ['app\controller\page\site\HomeController', 'home']);
             });
 
             // PANEL ROUTES
-            $r->addGroup('/projetosdiasdev/panel', function (RouteCollector $r) {
+            $r->addGroup($baseUrl. 'panel', function (RouteCollector $r) { // panel/dashboard
                 $r->addRoute('GET', '', ['app\controller\page\panel_admin\DashboardController', 'dashboard']);
                 $r->addRoute('GET', '/dashboard', ['app\controller\page\panel_admin\DashboardController', 'dashboard']);
                 $r->addRoute('GET', '/profile', ['app\controller\page\panel_admin\ProfileController', 'profile']);
@@ -24,7 +24,7 @@ class Routes
             });
 
             // API ROUTES
-            $r->addGroup('/projetosdiasdev/api', function (RouteCollector $r) {
+            $r->addGroup($baseUrl. 'api', function (RouteCollector $r) {  // api/post/news
                 $r->addRoute('POST', '/post/news', ['app\controller\api\panel\news\NewsControllerTeste3', 'postNews']);
 
             });
