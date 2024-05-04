@@ -15,7 +15,6 @@ $config = new RoutesConfig();
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
 
-// Adicione verificação e manipulação CORS aqui
 if ($httpMethod === 'OPTIONS') {
     // Responda com cabeçalhos CORS apropriados
     header("Access-Control-Allow-Origin: *");
@@ -26,9 +25,6 @@ if ($httpMethod === 'OPTIONS') {
 }
 
 $config->dispatch($httpMethod, $uri);
-
-
-
 CountVisitsService::getVisits();
 
 
