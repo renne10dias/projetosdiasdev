@@ -9,10 +9,13 @@ class Routes
 {
     public static function defineRoutes(){
         return simpleDispatcher(function (RouteCollector $r) {
+
+            // SITE ROUTES
             $r->addGroup('/projetosdiasdev/', function (RouteCollector $r) {
                 $r->addRoute('GET', '', ['app\controller\page\site\HomeController', 'home']);
             });
 
+            // PANEL ROUTES
             $r->addGroup('/projetosdiasdev/panel', function (RouteCollector $r) {
                 $r->addRoute('GET', '', ['app\controller\page\panel_admin\DashboardController', 'dashboard']);
                 $r->addRoute('GET', '/dashboard', ['app\controller\page\panel_admin\DashboardController', 'dashboard']);
@@ -20,6 +23,7 @@ class Routes
                 $r->addRoute('GET', '/news', ['app\controller\page\panel_admin\PostNewsController', 'postNews']);
             });
 
+            // API ROUTES
             $r->addGroup('/projetosdiasdev/api', function (RouteCollector $r) {
                 $r->addRoute('POST', '/post/news', ['app\controller\api\panel\news\NewsControllerTeste3', 'postNews']);
 
@@ -30,8 +34,4 @@ class Routes
         });
     }
 
-    public static function hello($vars)
-    {
-        echo 'Hello World!';
-    }
 }
