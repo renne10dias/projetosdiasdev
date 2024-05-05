@@ -25,7 +25,7 @@ class Routes{
 
             // API ROUTES
             $r->addGroup($baseUrl. 'api', function (RouteCollector $r) {  // api/post/news
-                $r->addRoute('POST', '/post/news', ['app\controller\api\panel\news\NewsControllerTeste3', 'postNews']);
+                $r->addRoute('POST', '/post/news', ['app\controller\api\panel\news\NewsController', 'postNews']);
 
             });
 

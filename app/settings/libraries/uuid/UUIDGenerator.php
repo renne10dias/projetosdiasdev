@@ -5,23 +5,15 @@ namespace app\settings\libraries\uuid;
 use Ramsey\Uuid\Uuid;
 
 class UUIDGenerator {
-    private $uuid;
-
-    public function __construct() {
+    public static function getUUID() {
         // Gera um UUID usando Ramsey UUID
-        $this->uuid = Uuid::uuid4()->toString();
-    }
-
-    public function getUUID() {
-        return $this->uuid;
+        return Uuid::uuid4()->toString();
     }
 }
 
 // Exemplo de uso:
 
-// Cria uma instância da classe UUIDGenerator
-//$uuidGenerator = new UUIDGenerator();
 // Obtém o UUID gerado
-//$uuid = $uuidGenerator->getUUID();
+//$uuid = UUIDGenerator::getUUID();
 // Exibe o UUID gerado
 //echo "UUID gerado: $uuid";

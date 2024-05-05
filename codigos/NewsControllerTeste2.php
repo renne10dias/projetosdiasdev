@@ -1,14 +1,16 @@
 <?php
 
-namespace app\controller\api\panel\news;
+namespace codigos;
 
 use app\domain\entity\news\News;
 use app\domain\service\panel\news\NewsService;
 use app\settings\project\http\HttpStatus;
 use app\settings\project\message\BusinessMessage;
+
 header('Content-Type: application/json');
 
-class NewsControllerTeste3{
+class NewsControllerTeste2{
+
 
     public function postNews() {
         try {
@@ -22,26 +24,36 @@ class NewsControllerTeste3{
             }
 
 
-            $title = $data['title'];
-            $description = $data['description'];
-            $text = $data['text'];
-            $imagesArray = $data['images'];
-            $type = $data['type'];
-            $tb_category_uuid = $data['tb_category_uuid'];
-            $tb_user_uuid = $data['tb_user_uuid'];
-
+            $image = [
+                'base64' => $data['image']['base64'], // Substitua isso pela sua string base64 válida
+                'fileName' => $data['image']['name'] // Substitua isso pelo nome do arquivo da imagem
+            ];
 
             // Criar uma nova instância de News com os dados da requisição
-            $news = new News($title, $description, $text, $imagesArray, $type, $tb_category_uuid, $tb_user_uuid,);
+            $news = new News(
+                $data['title'],
+                $data['description'],
+                $data['text'],
+                $image, // Passa os dados da imagem diretamente para o construtor da News
+                $data['type'],
+                $data['tb_category_uuid'],
+                $data['tb_user_uuid']
+            );
+
             // Salvar a notícia
             $newsService = new NewsService();
             $newsService->postNews($news);
 
-        } catch (\RuntimeException $e) {
+        } catch (\Exception $e) {
             // Tratamento de erro específico para postar uma noticia
             new HttpStatus(500);
             echo json_encode(["message controller: " => $e->getMessage()]);
         }
     }
+
+
+
+
+
 
 }

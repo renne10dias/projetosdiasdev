@@ -105,14 +105,23 @@ class FileUploader {
             // Encontra o tipo de imagem a partir do cabeçalho Base64
             $posicao = strpos($base64_image, ';');
             $tipo_imagem = explode(':', substr($base64_image, 0, $posicao))[1];
+
+            // Verifica se o tipo da imagem é PNG ou JPG
+            if (!in_array($tipo_imagem, ['image/png', 'image/jpeg'])) {
+                // Se não for PNG ou JPG, pula para a próxima imagem
+                continue;
+            }
+
             // Remover o cabeçalho "data:image/jpeg;base64," do formato Base64
             $base64_image = substr($base64_image, strpos($base64_image, ',') + 1);
             // Decodificar a string Base64 em dados binários
             $image_data = base64_decode($base64_image);
             // Gerar um nome de arquivo único
-            $fileName = uniqid('image_') . '.' . strtolower(str_replace('image/', '', $tipo_imagem));
+            $extension = strtolower(str_replace('image/', '', $tipo_imagem));
+            $fileName = uniqid() . '.' . $extension;
             // Caminho completo para salvar o arquivo
             $filePath =  __DIR__ . "/../../files/images/" . $fileName;
+
             // Salvar o arquivo no servidor
             if (file_put_contents($filePath, $image_data) === false) {
                 // Se houver um erro ao salvar o arquivo, retornar false imediatamente
@@ -122,6 +131,7 @@ class FileUploader {
         // Se todas as imagens foram salvas com sucesso, retornar true
         return true;
     }
+
 
 
 

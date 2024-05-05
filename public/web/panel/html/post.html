@@ -3,64 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Notícia</title>
+    <title>Enviar Dados do Formulário</title>
 </head>
 <body>
-<h2>Enviar Notícia</h2>
-<form id="newsForm">
-    <label for="title">Título:</label><br>
-    <input type="text" id="title" name="title" required><br>
 
-    <label for="description">Descrição:</label><br>
-    <input type="text" id="description" name="description" required><br>
+<form id="meuFormulario" enctype="multipart/form-data">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title"><br><br>
 
-    <label for="text">Texto:</label><br>
-    <textarea id="text" name="text" required></textarea><br>
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description"><br><br>
 
-    <label for="type">Tipo:</label><br>
-    <input type="text" id="type" name="type" required><br>
+    <label for="text">Text:</label>
+    <input type="text" id="text" name="text"><br><br>
 
-    <label for="tb_category_uuid">Categoria UUID:</label><br>
-    <input type="text" id="tb_category_uuid" name="tb_category_uuid" required><br>
+    <label for="type">Type:</label>
+    <input type="text" id="type" name="type"><br><br>
 
-    <label for="tb_user_uuid">Usuário UUID:</label><br>
-    <input type="text" id="tb_user_uuid" name="tb_user_uuid" required><br>
+    <label for="tb_category_uuid">tb_category_uuid:</label>
+    <input type="text" id="tb_category_uuid" name="category_uuid"><br><br>
 
-    <label for="image">Imagem:</label><br>
-    <input type="file" id="image" name="image" accept="image/*" required><br>
+    <label for="tb_user_uuid">tb_user_uuid:</label>
+    <input type="text" id="tb_user_uuid" name="user_uuid"><br><br>
 
-    <input type="button" value="Enviar" onclick="submitForm()">
+
+
+
+
+    <label for="images">Imagens:</label>
+    <input type="file" id="images" name="imagens" multiple><br><br>
+
+    <button type="button" onclick="enviarFormulario()">Enviar</button>
 </form>
 
 <script>
-    // Função para ler arquivo como base64
-    function fileToBase64(file, callback) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const base64 = reader.result.split(',')[1];
-            callback(base64);
-        };
-        reader.onerror = function (error) {
-            console.error('Erro ao ler arquivo:', error);
-        };
-        reader.readAsDataURL(file);
-    }
 
-    // Função para obter os valores do formulário
-    function getFormData() {
-        return {
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value,
-            text: document.getElementById('text').value,
-            type: document.getElementById('type').value,
-            tb_category_uuid: document.getElementById('tb_category_uuid').value,
-            tb_user_uuid: document.getElementById('tb_user_uuid').value,
-            image: document.getElementById('image').files[0]
-        };
-    }
-
-    // Função para enviar os dados para o servidor
-    function sendDataToServer(data) {
+    async function sendDataToServer(data) {
         fetch('/projetosdiasdev/api/post/news', {
             method: 'POST',
             headers: {
@@ -68,15 +46,17 @@
             },
             body: JSON.stringify(data)
         })
-            .then(response => {
+            .then(async response => {
                 if (response.ok) {
                     // Sucesso
-                    alert('Notícia postada com sucesso!');
+                    const responseData = await response.json();
+                    alert('Código HTTP: ' + response.status + '\nMensagem: ' + responseData.message);
                     // Limpar o formulário se necessário
-                    document.getElementById('newsForm').reset();
+                    document.getElementById('meuFormulario').reset();
                 } else {
                     // Erro
-                    throw new Error('Erro ao postar notícia.');
+                    const errorData = await response.json();
+                    throw new Error('Código HTTP: ' + response.status + '\nErro: ' + errorData.message);
                 }
             })
             .catch(error => {
@@ -84,37 +64,61 @@
             });
     }
 
-    // Função para enviar o formulário
-    function submitForm() {
-        // Obtém os valores do formulário
-        const formData = getFormData();
 
-        // Verifica se todos os campos obrigatórios estão preenchidos
-        const requiredFields = ['title', 'description', 'text', 'type', 'tb_category_uuid', 'tb_user_uuid', 'image'];
-        const missingFields = requiredFields.filter(field => !formData[field]);
-        if (missingFields.length > 0) {
-            alert('Por favor, preencha todos os campos obrigatórios.');
-            return;
-        }
 
-        // Converte a imagem para base64 e envia os dados para o servidor
-        fileToBase64(formData.image, function(base64Image) {
-            const jsonData = {
-                title: formData.title,
-                description: formData.description,
-                text: formData.text,
-                type: formData.type,
-                tb_category_uuid: formData.tb_category_uuid,
-                tb_user_uuid: formData.tb_user_uuid,
-                image: {
-                    name: formData.image.name,
-                    base64: base64Image
+
+    function enviarFormulario() {
+        // Capturar os valores do formulário
+        var title = document.getElementById("title").value;
+        var description = document.getElementById("description").value;
+        var text = document.getElementById("text").value;
+        var type = document.getElementById("type").value;
+        var tb_category_uuid = document.getElementById("tb_category_uuid").value;
+        var tb_user_uuid = document.getElementById("tb_user_uuid").value;
+
+
+        var images = document.getElementById("images").files; // Capturar as imagens selecionadas
+
+        // Criar um objeto para armazenar os dados
+        var dados = {
+            title: title,
+            description: description,
+            text: text,
+            type: type,
+            tb_category_uuid: tb_category_uuid,
+            tb_user_uuid: tb_user_uuid,
+            images: [] // Inicializar um array para armazenar os URLs de dados das imagens
+        };
+
+        // Iterar sobre cada imagem selecionada
+        for (var i = 0; i < images.length; i++) {
+            // Criar um novo FileReader
+            var reader = new FileReader();
+
+            // Definir uma função de callback para quando a leitura do arquivo for concluída
+            reader.onload = function(event) {
+                // Adicionar o URL de dados da imagem ao array de imagens no objeto dados
+                dados.images.push(event.target.result);
+
+                // Verificar se todas as imagens foram processadas
+                if (dados.images.length === images.length) {
+                    // Mostrar os dados no console como JSON
+                    //console.log(JSON.stringify(dados));
+                    sendDataToServer(dados);
+
+
                 }
             };
 
-            sendDataToServer(jsonData);
-        });
+            // Ler a imagem como um URL de dados (Base64)
+            reader.readAsDataURL(images[i]);
+        }
     }
+
 </script>
+
 </body>
 </html>
+
+
+
