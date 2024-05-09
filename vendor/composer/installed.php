@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'projetosdiasdev/projetosdiasdev',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'cdbc158a0ac8f1740e6d55afa8a2eb7ac6d1da3f',
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'reference' => '864a0290250e5f5f3e369c14b33d93068ac2dc24',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -83,9 +83,9 @@
             'dev_requirement' => false,
         ),
         'projetosdiasdev/projetosdiasdev' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'cdbc158a0ac8f1740e6d55afa8a2eb7ac6d1da3f',
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'reference' => '864a0290250e5f5f3e369c14b33d93068ac2dc24',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -140,9 +140,9 @@
             'dev_requirement' => false,
         ),
         'ramsey/uuid' => array(
-            'pretty_version' => '4.7.5',
-            'version' => '4.7.5.0',
-            'reference' => '5f0df49ae5ad6efb7afa69e6bfab4e5b1e080d8e',
+            'pretty_version' => '4.7.6',
+            'version' => '4.7.6.0',
+            'reference' => '91039bc1faa45ba123c4328958e620d382ec7088',
             'type' => 'library',
             'install_path' => __DIR__ . '/../ramsey/uuid',
             'aliases' => array(),
@@ -214,7 +214,7 @@
         'rhumsaa/uuid' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '4.7.5',
+                0 => '4.7.6',
             ),
         ),
         'symfony/deprecation-contracts' => array(

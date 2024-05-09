@@ -30,7 +30,7 @@ class NewsService{
             $tb_category_uuid = $news->getTbCategoryUuid();
             $tb_user_uuid = $news->getTbUserUuid();
 
-            // Etapa 2: Inserir detalhes do cliente na tabela tb_client_details
+            // Etapa 2: Inserir detalhes da notícia na tabela tb_news
             $stmt_details = $connection->prepare("INSERT INTO tb_news (uuid, title, description, text, slug, link_share_news, type, created_at, tb_category_uuid, tb_user_uuid) VALUES (:uuid, :title, :description, :text, :slug, :link_share_news, :type, :created_at, :tb_category_uuid, :tb_user_uuid)");
             $stmt_details->bindParam(':uuid', $uuid, \PDO::PARAM_STR);
             $stmt_details->bindParam(':title', $title, \PDO::PARAM_STR);
@@ -45,18 +45,19 @@ class NewsService{
             $stmt_details->execute();
 
             // Salvar imagens
-            $images = $news->getImages();
-            FileUploader::severalBase64ImagesTest($images);
-
-            // Confirmar a transação
-            $connection->commit();
-            new BusinessMessage('Notícia postada com sucesso!', 201);
+            if (FileUploader::severalBase64Images($news->getImages())) {
+                // Confirmar a transação
+                $connection->commit();
+                new BusinessMessage('Notícia postada com sucesso!', 201);
+            } else{
+                // Em caso de erro, desfazer a transação e exibir mensagem de erro
+                $connection->rollback();
+                new BusinessMessage("Erro ao postar notícia. Verifique se todas as imagens foram salvas corretamente.", 500);
+            }
 
         } catch (\PDOException $e) {
             // Em caso de erro, desfazer a transação e exibir mensagem de erro
-            if ($connection !== null) {
-                $connection->rollback();
-            }
+            $connection->rollback();
             new BusinessMessage("Erro no NewsService: " . $e->getMessage(), 500);
         }
     }

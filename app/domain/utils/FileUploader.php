@@ -74,33 +74,8 @@ class FileUploader {
     }
 
 
-    public function severalBase64Images(array $imageData): bool {
-        foreach ($imageData as $base64_image) {
-            // Remover o cabeçalho "data:image/jpeg;base64," do formato Base64
-            $base64_image = str_replace('data:image/jpeg;base64,', '', $base64_image);
 
-            // Decodificar a string Base64 em dados binários
-            $image_data = base64_decode($base64_image);
-
-            // Gerar um nome de arquivo único
-            $fileName = uniqid('image_') . '.jpg';
-
-            // Caminho completo para salvar o arquivo
-            $filePath =  __DIR__ . "/../../files/images/" . $fileName;
-
-            // Salvar o arquivo no servidor
-            if (file_put_contents($filePath, $image_data) === false) {
-                // Se houver um erro ao salvar o arquivo, retornar false imediatamente
-                return false;
-            }
-        }
-
-        // Se todas as imagens foram salvas com sucesso, retornar true
-        return true;
-    }
-
-
-    public static function severalBase64ImagesTest(array $imageData): bool {
+    public static function severalBase64Images(array $imageData): bool {
         foreach ($imageData as $base64_image) {
             // Encontra o tipo de imagem a partir do cabeçalho Base64
             $posicao = strpos($base64_image, ';');
