@@ -2,11 +2,12 @@
 
 namespace app\urls;
 
+use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use function FastRoute\simpleDispatcher;
 
 class Routes{
-    public static function defineRoutes(){
+    public static function defineRoutes(): Dispatcher {
         return simpleDispatcher(function (RouteCollector $r) {
             $baseUrl = '/projetosdiasdev/';
 

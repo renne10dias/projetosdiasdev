@@ -11,7 +11,7 @@ class Database{
     private const HOST = 'localhost';
     private const DATABASE = 'cmacad24_projetosdiasdev';
     private const USERNAME = 'root';
-    private const PASSWORD = 'ultraslim123*';
+    private const PASSWORD = '*';
 
     private function __construct(){
         $dsn = "mysql:host=" . self::HOST . ";dbname=" . self::DATABASE;

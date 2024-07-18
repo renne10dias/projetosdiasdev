@@ -88,7 +88,6 @@
         for (var i = 0; i < images.length; i++) {
             // Criar um novo FileReader
             var reader = new FileReader();
-
             // Definir uma função de callback para quando a leitura do arquivo for concluída
             reader.onload = function(event) {
                 // Adicionar o URL de dados da imagem ao array de imagens no objeto dados
@@ -99,8 +98,6 @@
                     // Mostrar os dados no console como JSON
                     //console.log(JSON.stringify(dados));
                     sendDataToServer(dados);
-
-
                 }
             };
 
